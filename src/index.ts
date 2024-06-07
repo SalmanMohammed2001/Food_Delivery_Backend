@@ -35,6 +35,7 @@ const foodRouter=require('./routes/foodRoutes');
 
 
 app.use("/api/food",foodRouter)
+app.use("/images",express.static('src/uploads'))
 
 
 

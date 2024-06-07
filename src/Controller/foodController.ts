@@ -24,7 +24,6 @@ const addFood= async (req:any,res:any)=>{
         image:image_fileName,
     })
 
-
        food.save().then()
 
      res.status(200).json({success:true,message:"food Successfully created"})
@@ -34,4 +33,21 @@ const addFood= async (req:any,res:any)=>{
 
 }
 
-export {addFood}
+//all food list
+
+const  listFood=async (req:any,res:any)=>{
+
+    try {
+        const  foods=await  FoodModel.find({})
+        return   res.status(200).json({success:true,message:"food list",data:foods})
+
+    }catch (error){
+     return    res.status(500).json({success:false,message:"Internal server error"})
+    }
+
+
+}
+
+
+/
+export {addFood,listFood}
