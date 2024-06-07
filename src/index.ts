@@ -4,13 +4,21 @@ import  cors from "cors"
 import connectDB from "./config/db";
 import mongoose from "mongoose";
 
+import bodyParser from "body-parser";
+
+var cookieParser = require('cookie-parser')
+
+
 
 //app config
 const app=express();
 const port = 4000
 
+
+
 //middleware
 app.use(express.json())
+
 app.use(cors())
 
 
@@ -23,10 +31,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/food-delivery').then(()=>{
     })
 })
 
+const foodRouter=require('./routes/foodRoutes');
 
-app.get("/",(req,res)=>{
-    res.send("Api Working")
-})
+
+app.use("/api/food",foodRouter)
+
+
+
 
 
 // mongodb+srv://salmannisthar123:760088930@cluster0.ladoxqg.mongodb.net/?
