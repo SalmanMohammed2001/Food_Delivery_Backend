@@ -26,9 +26,9 @@ const addFood= async (req:any,res:any)=>{
 
        food.save().then()
 
-     res.status(200).json({success:true,message:"food Successfully created"})
+    return  res.status(200).json({success:true,message:"food Successfully created"})
     }catch (error){
-      res.status(500).json({success:false,message:"Internal server error"})
+   return    res.status(500).json({success:false,message:"Internal server error"})
     }
 
 }
@@ -42,12 +42,30 @@ const  listFood=async (req:any,res:any)=>{
         return   res.status(200).json({success:true,message:"food list",data:foods})
 
     }catch (error){
-     return    res.status(500).json({success:false,message:"Internal server error"})
+        return    res.status(500).json({success:false,message:"Internal server error"})
     }
 
 
 }
 
 
-/
-export {addFood,listFood}
+// remove food
+const  removeFood=async (req:any,res:any)=>{
+
+    const id = req.params.id;
+
+    try {
+
+        const food= await FoodModel.findById(id)
+        fs.unlink(`src/uploads/${food!.image}`,()=>{})
+
+        await  FoodModel.findByIdAndDelete(id)
+        return   res.status(200).json({success:true,message:"food remove"})
+    }catch (error){
+        return    res.status(500).json({success:false,message:"Internal server error"})
+    }
+}
+
+
+
+export {addFood,listFood,removeFood}
