@@ -35,7 +35,7 @@ const loginUser= async (req:any,res:any)=>{
 }
 
 //register user
-const  listFood=async (req:any,res:any)=>{
+const  registerUser=async (req:any,res:any)=>{
 
     try {
         const  foods=await  FoodModel.find({})
@@ -50,22 +50,8 @@ const  listFood=async (req:any,res:any)=>{
 
 
 // remove food
-const  removeFood=async (req:any,res:any)=>{
-
-    const id = req.params.id;
-
-    try {
-
-        const food= await FoodModel.findById(id)
-        fs.unlink(`src/uploads/${food!.image}`,()=>{})
-
-        await  FoodModel.findByIdAndDelete(id)
-        return   res.status(200).json({success:true,message:"food remove"})
-    }catch (error){
-        return    res.status(500).json({success:false,message:"Internal server error"})
-    }
-}
 
 
 
-export {addFood,listFood,removeFood}
+
+export {loginUser,registerUser}
