@@ -1,5 +1,6 @@
 import express from "express";
 import {addToCart, getCart, removeCart} from "../Controller/cartController";
+import {authMiddleware} from "../middleware/authMiddleware";
 
 
 
@@ -18,9 +19,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-cartRouter.post("/add", addToCart )
-cartRouter.post("/remove", removeCart)
-cartRouter.get("/get", getCart)
+cartRouter.post("/add",authMiddleware,addToCart )
+cartRouter.post("/remove",authMiddleware,removeCart)
+cartRouter.get("/get",authMiddleware,getCart)
 
 
 module.exports = cartRouter
