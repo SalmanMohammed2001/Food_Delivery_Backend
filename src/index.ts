@@ -35,12 +35,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/food-delivery').then(()=>{
 const foodRouter=require('./routes/foodRoutes');
 const userRouter=require('./routes/userRoutes');
 const cartRouter=require('./routes/cartRoutes');
+const orderRouter=require('./routes/orderRoutes');
 
 
 app.use("/api/food",foodRouter)
 app.use("/images",express.static('src/uploads'))
 app.use("/api/user",userRouter)
 app.use("/api/cart",cartRouter)
+app.use("/api/order",orderRouter)
 
 
 
