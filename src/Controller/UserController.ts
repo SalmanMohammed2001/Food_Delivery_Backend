@@ -1,48 +1,94 @@
-
-
-import userModel from "../models/UserModel";
-import  jwt from "jsonwebtoken"
-import  bcrypt from "bcrypt"
-import  validator from "validator"
+import UserModel from "../models/UserModel";
+import * as process from "process";
+// import jwt from "jsonwebtoken"
+// import bcrypt from "bcrypt"
+const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
+const validator=require('validator');
 
 
 //login user
 
-const loginUser= async (req:any,res:any)=>{
+const loginUser = async (req: any, res: any) => {
 
-    try {
-
-   let image_fileName=`${req.file.filename}`
-
-   console.log(image_fileName)
-    console.log(req.body)
-
-    const food= new FoodModel ({
-        name:req.body.name,
-         description:req.body.description,
-         price:req.body.price,
-         category:req.body.category,
-        image:image_fileName,
-    })
-
-       food.save().then()
-
-    return  res.status(200).json({success:true,message:"food Successfully created"})
-    }catch (error){
-   return    res.status(500).json({success:false,message:"Internal server error"})
-    }
+    // try {
+    //     const {name, email, password} = req.body
+    //
+    //     const exists = await UserModel.findOne({email})
+    //
+    //     if (exists) {
+    //         return res.status(500).json({success: false, message: "User already exists"})
+    //     }
+    //
+    //     if(!validator.isEmail(email)){
+    //         return res.status(500).json({success: false, message: "please enter valid email"})
+    //     }
+    //
+    //     if(password.length<8){
+    //         return res.status(500).json({success: false, message: "please enter strong password"})
+    //     }
+    //
+    //     const salt=await  bcrypt.genSalt(10);
+    //     const hashPassword=await bcrypt.hash(password,salt)
+    //
+    //     const newUser =new UserModel({
+    //         name:name,
+    //         email:email,
+    //         password:hashPassword
+    //     })
+    //
+    //   const user =await  newUser.save()
+    //
+    //
+    //     return res.status(200).json({success: true, message: "food Successfully created"})
+    // } catch (error) {
+    //     return res.status(500).json({success: false, message: "Internal server error"})
+    // }
 
 }
 
+
+const createToken=  (id:any)=>{
+    return jwt.sign({id},process.env.JWT_SECRET)
+}
+
+
 //register user
-const  registerUser=async (req:any,res:any)=>{
+const registerUser = async (req: any, res: any) => {
 
     try {
-        const  foods=await  FoodModel.find({})
-        return   res.status(200).json({success:true,message:"food list",data:foods})
+        const {name, email, password} = req.body
 
-    }catch (error){
-        return    res.status(500).json({success:false,message:"Internal server error"})
+        const exists = await UserModel.findOne({email})
+
+        if (exists) {
+            return res.status(500).json({success: false, message: "User already exists"})
+        }
+
+        if(!validator.isEmail(email)){
+            return res.status(500).json({success: false, message: "please enter valid email"})
+        }
+
+        if(password.length<8){
+            return res.status(500).json({success: false, message: "please enter strong password"})
+        }
+
+        const salt=await  bcrypt.genSalt(10);
+        const hashPassword=await bcrypt.hash(password,salt)
+
+        const newUser =new UserModel({
+            name,
+            email,
+            password:hashPassword
+        })
+
+    const user=  await newUser.save()
+    const token=createToken(user._id)
+
+
+        return res.status(200).json({success: true, message: "user Successfully created",token})
+    } catch (error) {
+        return res.status(500).json({success: false, message: "Internal server error"})
     }
 
 
@@ -52,6 +98,4 @@ const  registerUser=async (req:any,res:any)=>{
 // remove food
 
 
-
-
-export {loginUser,registerUser}
+export {loginUser, registerUser}

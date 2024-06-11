@@ -5,14 +5,16 @@ import connectDB from "./config/db";
 import mongoose from "mongoose";
 
 import bodyParser from "body-parser";
+import * as process from "process";
 
 var cookieParser = require('cookie-parser')
-
+const dotenv=require('dotenv')
+dotenv.config({ path: 'src/.env' });
 
 
 //app config
 const app=express();
-const port = 4000
+const port = process.env.SERVER
 
 
 
