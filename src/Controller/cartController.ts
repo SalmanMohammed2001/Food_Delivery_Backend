@@ -10,3 +10,5 @@ const removeCart=async (req:any,res:any)=>{
 const getCart=async (req:any,res:any)=>{
 
 }
+
+export {addToCart,removeCart,getCart}
